@@ -1,4 +1,3 @@
-
 project(reversestring)
 
 set(HEDEAR_FILES ReverseString.h)
