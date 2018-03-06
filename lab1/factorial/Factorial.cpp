@@ -7,15 +7,19 @@ int factorialit(int value);
 
 int factorialrec(int value);
 
-int factorial(int value) {
+bool CheckOutOfRange(int value);
+
+int Factorial(int value) {
+    if (CheckOutOfRange(value)) {
+        return 0;
+    }
     //return factorialit(value);
     return factorialrec(value);
 }
 
-int factorialit(int value) {
-    if (value>=13||value<=-13)
-        return 0;
+bool CheckOutOfRange(int value) { return value >= 13 || value <= -13; }
 
+int factorialit(int value) {
     int result = 1;
 
     for(;value!=0;value-=(value > 0) ? 1 : -1)
@@ -24,9 +28,7 @@ int factorialit(int value) {
 }
 
 int factorialrec(int value) {
-    if (value >= 13 || value <= -13){
-        return 0;
-    }else if (value == 0){
+    if (value == 0){
         return 1;
     } else {
         return value * factorialrec(value > 0 ? (value-1) : (value+1));
