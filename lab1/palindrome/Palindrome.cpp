@@ -3,8 +3,7 @@
 //
 
 #include "Palindrome.h"
-#include "../reversestring/ReverseString.h"
-#include "ReverseString.h"
+#include <ReverseString.h>
 #include <string>
 
 bool is_palindrome(std::string str){
