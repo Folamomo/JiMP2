@@ -3,8 +3,7 @@
 //
 
 #include <iostream>
-#include <string.h>
-#include "ReverseString.h"
+#include <ReverseString.h>
 
 int main(){
     std::cout << reverse("Tekst tylem") <<std::endl;
