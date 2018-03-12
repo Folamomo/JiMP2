@@ -4,41 +4,52 @@
 
 #include "Polybius.h"
 
-int PointerToIndeks(const char *c){
+
+std::string encryptOneChar(char c){
+    std::string output;
     int indeks = -1;
-    if (*c>='A' && *c<='I'){
-        indeks = *c-'A';
-    } else if (*c>='J' && *c<='Z'){
-        indeks = *c - 'A'-1;
-    } else if (*c>='a' && *c<='i'){
-        indeks = *c-'a';
-    } else if (*c>='j' && *c<='z'){
-        indeks = *c - 'a'-1;
+    if (c>='A' && c<='I'){
+        indeks = c-'A';
+    } else if (c>='J' && c<='Z'){
+        indeks = c - 'A'-1;
+    } else if (c>='a' && c<='i'){
+        indeks = c-'a';
+    } else if (c>='j' && c<='z'){
+        indeks = c - 'a'-1;
     }
-    return indeks;
+    if (indeks<0){
+        return output;
+    }
+    int rowNumber = indeks/5+1;
+    int columnNumber = indeks % 5 +1;
+    output += std::to_string(rowNumber);
+    output += std::to_string(columnNumber);
+    return output;
 }
 
-std::string IndexToValue(int index){
-    if (index>=0){
-        int a = 0;
-        a=(index/5+1)*10+index%5+1;
-        return std::to_string(a);
-    }
-    else return "";
+char decryptOneChar(const char *c){
+    int rowNumber = *c - '0';
+    int columnNumber = *(c+1) - '0';
+    char character = 'a' + (rowNumber-1)*5+columnNumber-1;
+    if (character>='j') ++character;
+    return  character;
 }
 
 std::string PolybiusCrypt(std::string message){
     const char* characters = (message.c_str());
     std::string output;
     for (int i = 0; i < message.length(); ++i) {
-        char c;
-        int indeks = PointerToIndeks(characters + i);
-        output += IndexToValue(indeks);
+        output += encryptOneChar(*(characters+i));
     }
     return output;
 }
 
 
 std::string PolybiusDecrypt(std::string crypted){
-
+    const char* characters = (crypted.c_str());
+    std::string output;
+    for (int i = 0; i < crypted.length(); i+=2) {
+        output += decryptOneChar(characters + i);
+    }
+    return output;
 }
