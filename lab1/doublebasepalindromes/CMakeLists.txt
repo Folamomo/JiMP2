@@ -11,4 +11,5 @@ add_executable(doublebasepalindromes ${SOURCE_FILES} main.cpp)
 
 target_link_libraries(doublebasepalindromes libdoublebasepalindromes)
 target_link_libraries(libdoublebasepalindromes libpalindrome)
+target_link_libraries(libdoublebasepalindromes libreversestring)
 
