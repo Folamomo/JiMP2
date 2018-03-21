@@ -6,18 +6,22 @@
 
 namespace geometry {
     Square::Square(const Point &a, const Point &b, const Point &c, const Point &d) {
-        double bok = a.Distance(b);
-        if (bok == b.Distance(c)&& bok == c.Distance(d)&& bok == d.Distance(a)&&a.Distance(c) == b.Distance(d)){
-            a_= a;
+        /*if (a.Distance(b) == b.Distance(c)&&
+            a.Distance(b) == c.Distance(d)&&
+            a.Distance(b) == d.Distance(a)&&
+            a.Distance(c) == b.Distance(d)){
+           */ a_= a;
             b_= b;
             c_= c;
             d_= d;
-        } else {
+            std::cout<<"Kwadrat"<<std::endl;
+        /*} else {
             a_= Point();
             b_= Point();
             c_= Point();
             d_= Point();
-        }
+            std::cout<<"Nie kwadrat"<<std::endl;
+        }*/
 
     }
 
