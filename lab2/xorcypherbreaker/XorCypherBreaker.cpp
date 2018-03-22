@@ -28,7 +28,7 @@ std::vector<std::string> ExtractWords(const std::vector<char> &cryptogram,
             words.push_back(word);
             word="";
         }
-        i=(++i)%key_length;
+        i=(i+1)%key_length;
     }
     return words;
 }
