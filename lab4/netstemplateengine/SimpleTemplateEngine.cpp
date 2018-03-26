@@ -16,7 +16,7 @@ std::string nets::View::Render(const std::unordered_map<std::string, std::string
     for (const auto& key : model){
         std::string replacement = key.second;
         if(std::regex_match(replacement, curlies)){
-            replacement="";
+            continue;
         }
         std::regex to_replace ("\\{\\{"+key.first +"\\}\\}");
         output=std::regex_replace (output, to_replace, replacement);
