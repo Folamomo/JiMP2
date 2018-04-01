@@ -2,7 +2,9 @@
 // Created by igor on 30.03.18.
 //
 
+#include <sstream>
 #include "Matrix.h"
+
 
 using comp=std::complex<double>;
 
@@ -74,11 +76,19 @@ void algebra::Matrix::set(std::complex<double> value, size_t x, size_t y) {
 }
 
 std::string algebra::Matrix::Print() const{
-    std::string result="[";
+    std::ostringstream result;
+    result<<"[";
     for (int i = 0; i < dimy_*dimx_; ++i) {
-        result+=std::to_string(data_[i].real())+", ";
+        result<<data_[i].real()<<"i"<<data_[i].imag();
+        if (i!=dimy_*dimx_-1) {
+            if ((i + 1) % dimx_ == 0)
+                result << "; ";
+            else
+                result << ", ";
+        }
     }
-    result+="]";
+    result << "]";
+    return result.str();
 }
 
 algebra::Matrix algebra::Matrix::Add(const algebra::Matrix &other) const{
