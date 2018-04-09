@@ -15,15 +15,19 @@ namespace pool {
     public:
         TextPool();
         TextPool(TextPool &&other);
+
         TextPool &operator=(TextPool &&other);
+
         ~TextPool();
 
-        TextPool(std::initializer_list<std::string> strings);
+        TextPool(const std::initializer_list<std::experimental::string_view> &elements);
 
         std::experimental::string_view Intern(const std::string &str);
         size_t StoredStringCount() const;
+
+
     private:
-        std::set<std::experimental::string_view> *data_;
+        std::set<std::experimental::string_view> data_;
     };
 }
 

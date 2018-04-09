@@ -50,6 +50,7 @@ std::string XorCypherBreaker(const std::vector<char> &cryptogram,
     for (int i = 0; i < key_length+1; ++i) {
         key[i]='a';
     }
+    
     while (key[key_length]=='a'){
         std::vector<std::string> words=ExtractWords(cryptogram, key_length, key);
         if(DictSearch(words, dictionary)){
