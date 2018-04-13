@@ -15,11 +15,11 @@ academia::StudyYear academia::StudyYear::operator--() {
 }
 
 bool academia::StudyYear::operator==(academia::StudyYear &other) {
-    return year_ == other.year_ ? true : false;
+    return year_ == other.year_;
 }
 
 bool academia::StudyYear::operator<(academia::StudyYear &other) {
-    return year_ < other.year_ ? true : false;
+    return year_ < other.year_;
 }
 
 std::ostream& academia::operator<<(std::ostream &out, const academia::StudyYear &me) {
