@@ -16,9 +16,9 @@ namespace academia{
         StudyYear(int year);
         StudyYear operator ++();
         StudyYear operator --();
-        bool operator==(StudyYear &other);
-        bool operator<(StudyYear &other);
-        operator int();
+        bool operator==(const StudyYear &other)const;
+        bool operator<(const StudyYear &other)const;
+        operator int()const ;
         friend std::ostream& operator << (std::ostream &out, const StudyYear &me);
         friend std::istream& operator >> (std::istream &in, StudyYear &me);
 
@@ -32,11 +32,20 @@ namespace academia{
     class Student{
     public:
         Student();
-        Student(std::initializer_list);
-        int GetId();
-        friend  std::ostream & operator << (std::ostream &out, const Student &me);
+        Student(std::string id, std::string first_name, std::string last_name, std::string program, int year);
+
+        std::string Id();
+        std::string FirstName()const;
+        std::string LastName()const;
+        std::string Program()const;
+        academia::StudyYear Year()const;
+
+        void ChangeLastName(std::string new_name);
+
+        bool operator == (const academia::Student &other)const;
+        friend std::ostream & operator << (std::ostream &out, const Student &me);
     private:
-        int id_;
+        std::string id_;
         std::string first_name_;
         std::string last_name_;
         std::string program_;
@@ -47,8 +56,10 @@ namespace academia{
 
     class StudentRepository{
     public:
+        StudentRepository(std::initializer_list<Student>list);
+        bool operator == (const academia::StudentRepository &other)const;
         Student & operator [](const std::string &id);
-        int StudentCount();
+        int StudentCount() const;
     private:
         std::vector<Student> students_;
     };
