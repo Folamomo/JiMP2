@@ -12,6 +12,7 @@
 namespace academia{
     class StudyYear{
     public:
+        StudyYear();
         StudyYear(int year);
         StudyYear operator ++();
         StudyYear operator --();
@@ -30,6 +31,8 @@ namespace academia{
 
     class Student{
     public:
+        Student();
+        Student(std::initializer_list);
         int GetId();
         friend  std::ostream & operator << (std::ostream &out, const Student &me);
     private:

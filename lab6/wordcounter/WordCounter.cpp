@@ -82,30 +82,16 @@ datastructures::Word::Word(std::string str) {
 }
 
 bool datastructures::Word::operator<(const datastructures::Word &other) const {
-    if(data_.compare(other.data_)>0){
-        return 1;
-    } else {
-        return 0;
-    }
-
+    return data_.compare(other.data_)>0;
 }
 
 bool datastructures::Word::operator>(const datastructures::Word &other) const {
-    if(data_.compare(other.data_)<0){
-        return 1;
-    } else {
-        return 0;
-    }
-
+    return data_.compare(other.data_)<0;
 }
 
 
 bool datastructures::Word::operator==(const datastructures::Word &other) const {
-    if(data_.compare(other.data_)==0){
-        return 1;
-    } else{
-        return 0;
-    }
+    return data_.compare(other.data_)==0;
 }
 
 

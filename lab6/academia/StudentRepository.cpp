@@ -40,8 +40,12 @@ academia::StudyYear::StudyYear(int year) {
     year_=year;
 }
 
+academia::StudyYear::StudyYear() {
+
+}
+
 academia::Student &academia::StudentRepository::operator[](const std::string &id) {
-    for(auto student:students_){
+    for(auto& student:students_){
         if (student.GetId()==std::stoi(id)){
             return student;
         }
@@ -61,3 +65,6 @@ std::ostream &academia::operator<<(std::ostream &out, const academia::Student &m
         "”, program: „"<<me.program_<<"”, year: "<<me.year_<<"}";
     return out;
 }
+
+academia::Student::Student() {}
+

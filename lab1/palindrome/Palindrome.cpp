@@ -8,10 +8,6 @@
 
 bool is_palindrome(std::string str){
     std::string reversed = reverse(str);
-    if(str.compare(reversed) == 0){
-        return 1;
-    }else{
-        return 0;
-    }
+    return str == reversed;
 
 }
