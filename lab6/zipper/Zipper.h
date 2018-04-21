@@ -12,19 +12,18 @@
 namespace datastructures {
     class ZipperIterator{
     public:
-        ZipperIterator();
+        ZipperIterator(std::string *s, int * i);
         std::pair<std::string,int> operator*() const;
         ZipperIterator &operator++();
         bool operator!=(const ZipperIterator &other) const;
     private:
-        const datastructures::Zipper *zip;
-        int i;
+        std::string *s_;
+        int *i_;
     };
 
     class Zipper {
     public:
         static Zipper zip(const std::vector<std::string> &vs, const std::vector<int> &vi);
-        std::pair<std::string, int> at(size_t index);
         ZipperIterator begin();
         ZipperIterator end();
     private:
