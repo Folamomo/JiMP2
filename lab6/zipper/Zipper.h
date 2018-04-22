@@ -29,7 +29,6 @@ namespace datastructures {
     private:
         std::vector<std::string> vs_;
         std::vector<int> vi_;
-        size_t size_;
     };
 }
 
