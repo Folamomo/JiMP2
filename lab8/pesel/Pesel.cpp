@@ -27,7 +27,7 @@ void academia::Pesel::validatePesel(const std::string &input) {
     }
     std::smatch s;
     std::regex pattern (R"(\d{11})");
-    if (!std::regex_match(pattern, s, input)){
+    if (!std::regex_match(input, s, pattern)){
         throw InvalidPeselCharacter(input);
     }
     int digits [11];
