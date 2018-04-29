@@ -16,6 +16,23 @@ namespace moviesubs {
         void ShiftAllSubtitlesBy(int delay, int framerate,
                                  std::stringstream* in, std::stringstream* out);
     };
+
+    class NegativeFrameAfterShift:public std::exception{
+
+    };
+
+    class SubtitleEndBeforeStart:public std::exception{
+    public:
+        SubtitleEndBeforeStart(const std::string &line_content, int line_number);
+        int LineAt() const;
+        const char* what () const noexcept override;
+    private:
+        std::string message_;
+        int line_number_;
+    };
+    class InvalidSubtitleLineFormat:public std::exception{
+
+    };
 }
 
 #endif //JIMP_EXERCISES_MOVIESUBTITLES_H
