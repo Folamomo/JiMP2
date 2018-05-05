@@ -36,6 +36,11 @@ void moviesubs::MicroDvdSubtitles::ShiftAllSubtitlesBy(int delay, int framerate,
     }
 }
 
+moviesubs::MicroDvdSubtitles::MicroDvdSubtitles() {
+    any_line_regex_=(R"(.*\n\n)");
+    correct_line_regex_=R"(\{(-?\d+)\}\{(-?\d+)\}(.+))"
+}
+
 moviesubs::SubtitleEndBeforeStart::SubtitleEndBeforeStart(const std::string &line_content, int line_number) {
     std::stringstream out_stream;
     line_number_=line_number;

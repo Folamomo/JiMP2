@@ -11,10 +11,37 @@
 #include <iostream>
 
 namespace moviesubs {
-    class MicroDvdSubtitles{
+
+    class SubtitleLine{
+        virtual bool ExtractOneLine(std::stringstream* in)=0;
+        virtual void InsertOneLine(std::stringstream* out)=0;
+        int start_time_;
+        int end_time_;
+        std::string text_;
+        int linenumber_;
+    };
+
+    class MovieSubtitles{
     public:
         void ShiftAllSubtitlesBy(int delay, int framerate,
                                  std::stringstream* in, std::stringstream* out);
+        std::regex any_line_regex_;
+        std::regex correct_line_regex_;
+    };
+
+    class MicroDvdSubtitles:public MovieSubtitles{
+    public:
+        MicroDvdSubtitles();
+        void ShiftAllSubtitlesBy(int delay, int framerate,
+                                 std::stringstream* in, std::stringstream* out);
+    };
+
+
+
+    //Errors
+
+    class SubtitleException : public std::invalid_argument{
+        SubtitleException
     };
 
     class NegativeFrameAfterShift:public std::exception{
@@ -33,6 +60,12 @@ namespace moviesubs {
     class InvalidSubtitleLineFormat:public std::exception{
 
     };
+
+    class OutOfOrderFrames:public std::exception{
+
+    };
+
+    class MissingTimeSpecification{};
 }
 
 #endif //JIMP_EXERCISES_MOVIESUBTITLES_H
