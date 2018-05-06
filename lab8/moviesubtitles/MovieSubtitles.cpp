@@ -15,6 +15,7 @@ void moviesubs::MicroDvdSubtitles::ShiftAllSubtitlesBy(int delay, int framerate,
 
     std::regex sub_line_regex(R"(\{(-?\d+)\}\{(-?\d+)\}(.+))");
     int line_index=1;
+
     char line_buffer[1000];
 
     while(in->getline(line_buffer, 1000)) {
@@ -26,32 +27,48 @@ void moviesubs::MicroDvdSubtitles::ShiftAllSubtitlesBy(int delay, int framerate,
                 throw(SubtitleEndBeforeStart(sub_line[0], line_index));
             }
             if (start_frame < 0){
-                throw(NegativeFrameAfterShift());
+                throw(NegativeFrameAfterShift(sub_line[0], line_index));
             }
             (*out)<<"{"<<start_frame<<"}{"<<end_frame<<"}"<<sub_line[3]<<"\n";
         } else{
-            throw(InvalidSubtitleLineFormat());
+            throw(InvalidSubtitleLineFormat(std::string(line_buffer), line_index));
         }
         ++line_index;
     }
 }
 
-moviesubs::MicroDvdSubtitles::MicroDvdSubtitles() {
-    any_line_regex_=(R"(.*\n\n)");
-    correct_line_regex_=R"(\{(-?\d+)\}\{(-?\d+)\}(.+))"
-}
 
-moviesubs::SubtitleEndBeforeStart::SubtitleEndBeforeStart(const std::string &line_content, int line_number) {
+moviesubs::SubtitleException::SubtitleException(const std::string &line_content, int line_number): std::invalid_argument{"SubtitleException"}{
     std::stringstream out_stream;
     line_number_=line_number;
     out_stream<<"At line "<<line_number_<<": "<<line_content;
     message_=out_stream.str();
 }
 
-int moviesubs::SubtitleEndBeforeStart::LineAt() const {
+int moviesubs::SubtitleException::LineAt() const {
     return line_number_;
 }
 
-const char *moviesubs::SubtitleEndBeforeStart::what() const noexcept {
+const char *moviesubs::SubtitleException::what() const noexcept {
     return message_.c_str();
+}
+
+moviesubs::NegativeFrameAfterShift::NegativeFrameAfterShift(const std::string &line_content, int line_number)
+        : SubtitleException(line_content, line_number) {
+
+}
+
+moviesubs::SubtitleEndBeforeStart::SubtitleEndBeforeStart(const std::string &line_content, int line_number)
+        : SubtitleException(line_content, line_number) {
+
+}
+
+moviesubs::InvalidSubtitleLineFormat::InvalidSubtitleLineFormat(const std::string &line_content, int line_number)
+        : SubtitleException(line_content, line_number) {
+
+}
+
+moviesubs::OutOfOrderFrames::OutOfOrderFrames(const std::string &line_content, int line_number) : SubtitleException(
+        line_content, line_number) {
+
 }
