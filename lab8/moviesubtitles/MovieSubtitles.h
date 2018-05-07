@@ -25,6 +25,7 @@ namespace moviesubs {
     };
 
     class SubRipSubtitles :public MovieSubtitles{
+    public:
         void ShiftAllSubtitlesBy(int delay, int framerate,
                                  std::stringstream* in, std::stringstream* out) override ;
     };
@@ -59,6 +60,7 @@ namespace moviesubs {
     };
 
     class MissingTimeSpecification:public InvalidSubtitleLineFormat{
+    public:
         MissingTimeSpecification(const std::string &line_content, int line_number);
     };
 }
