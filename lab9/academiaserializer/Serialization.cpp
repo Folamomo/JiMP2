@@ -50,59 +50,74 @@ academia::JsonSerializer::JsonSerializer(std::ostream *out) : Serializer(out) {
 }
 
 void academia::JsonSerializer::IntegerField(const std::string &field_name, int value) {
-    *(out_)<<"\""<<field_name<<"\": "<<value<<", ";
+    this->Distance();
+    *(out_)<<"\""<<field_name<<"\": "<<value;
 }
 
 void academia::JsonSerializer::DoubleField(const std::string &field_name, double value) {
-    *(out_)<<"\""<<field_name<<"\": "<<value<<", ";
+    this->Distance();
+    *(out_)<<"\""<<field_name<<"\": "<<value;
 }
 
 void academia::JsonSerializer::StringField(const std::string &field_name, const std::string &value) {
-    *(out_)<<"\""<<field_name<<"\": \""<<value<<"\", ";
+    this->Distance();
+    *(out_)<<"\""<<field_name<<"\": \""<<value<<"\"";
 }
 
 void academia::JsonSerializer::BooleanField(const std::string &field_name, bool value) {
+    this->Distance();
     *(out_)<<"\""<<field_name<<"\": \"";
     if (value)
         *out_<<"true";
     else
-        *out_<<"true";
-    *(out_)<<"\", ";
+        *out_<<"false";
+    *(out_)<<"\"";
 }
 
 void academia::JsonSerializer::SerializableField(const std::string &field_name, const academia::Serializable &value) {
-    //Serializer *subserializer =std::make_unique<JsonSerializer>(JsonSerializer(out_));
-    //*(out_)<<value.Serialize(subserializer);
+    this->Distance();
+    *(out_)<<"\""<<field_name<<"\": \"";
+    JsonSerializer sub_serializer(out_);
+    value.Serialize(&sub_serializer);
 }
 
 void academia::JsonSerializer::ArrayField(const std::string &field_name,
                                           const std::vector<std::reference_wrapper<const academia::Serializable>> &value) {
-
+    this->Distance();
+    *(out_)<<"\""<<field_name<<"\": [";
+    if (!value.empty()){
+        JsonSerializer sub_serializer(out_);
+        value[0].get().Serialize(&sub_serializer);
+    }
+    for (int i=1;i<value.size();++i){
+        JsonSerializer sub_serializer(out_);
+        *(out_)<<", ";
+        value[i].get().Serialize(&sub_serializer);
+    }
+    *(out_)<<"]";
 }
 
 void academia::JsonSerializer::Header(const std::string &object_name) {
     *(out_)<<"{";
+    is_first_= true;
 }
 
 void academia::JsonSerializer::Footer(const std::string &object_name) {
-    out_->seekp(out_->tellp()-2);
     *(out_)<<"}";
-    out_->put('');
+}
+
+void academia::JsonSerializer::Distance() {
+    if(is_first_){
+        is_first_= false;
+    } else {
+        *out_<<", ";
+    }
 }
 
 academia::Room::Room(int id_, const std::string &name_, academia::Room::Type type_) : id_(id_), name_(name_),
                                                                                       type_(type_) {}
 
-void academia::Room::Serialize(academia::Serializer *serializer) {
-    serializer->Header("Room");
-    serializer->IntegerField("id", id_);
-    serializer->StringField("name", name_);
-    serializer->StringField("type", this->Type_to_string(type_));
-    serializer->Footer("Room");
-
-}
-
-std::string academia::Room::Type_to_string(academia::Room::Type t) {
+std::string academia::Room::Type_to_string(academia::Room::Type t) const{
     switch (t){
         case Type (0):
             return "COMPUTER_LAB";
@@ -114,11 +129,40 @@ std::string academia::Room::Type_to_string(academia::Room::Type t) {
     return std::__cxx11::string();
 }
 
-void academia::Building::Serialize(academia::Serializer *serializer) {
+void academia::Room::Serialize(academia::Serializer *serializer) {
+    serializer->Header("Room");
+    serializer->IntegerField("id", id_);
+    serializer->StringField("name", name_);
+    serializer->StringField("type", this->Type_to_string(type_));
+    serializer->Footer("Room");
 
 }
 
+void academia::Room::Serialize(academia::Serializer *serializer) const {
+    serializer->Header("Room");
+    serializer->IntegerField("id", id_);
+    serializer->StringField("name", name_);
+    serializer->StringField("type", this->Type_to_string(type_));
+    serializer->Footer("Room");
+}
+
+void academia::Building::Serialize(academia::Serializer *serializer) {
+    serializer->Header("Building");
+    serializer->IntegerField("id", id_);
+    serializer->StringField("name", name_);
+    serializer->ArrayField("rooms", rooms_);
+    serializer->Footer("Building");
+}
+
 academia::Building::Building(int id_, const std::string &name_,
-                             const std::vector<std::reference_wrapper<const academia::Room>> &rooms_) : id_(id_),
+                             const std::vector<std::reference_wrapper<const academia::Serializable>> &rooms_) : id_(id_),
                                                                                                         name_(name_),
                                                                                                         rooms_(rooms_) {}
+
+void academia::Building::Serialize(academia::Serializer *serializer) const {
+    serializer->Header("Building");
+    serializer->IntegerField("id", id_);
+    serializer->StringField("name", name_);
+    serializer->ArrayField("rooms", rooms_);
+    serializer->Footer("Building");
+}
