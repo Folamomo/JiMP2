@@ -64,11 +64,11 @@ namespace academia{
                                     const std::map<int, std::vector<int>> &teacher_courses_assignment,
                                     const std::map<int, std::set<int>> &courses_of_year,
                                     int n_time_slots) override;
-        SchedulingItem FindTeacherRoomMatch(Schedule schedule,
-                                            int course_id,
-                                            const std::map<int, std::vector<int>> &teacher_courses_assignment,
+        std::pair<int, int> FindRoomAndSlot(const Schedule &schedule,
+                                            int teacher,
                                             const std::vector<int> &rooms,
-                                            int n_time_slots, int year_) const;
+                                            int n_time_slots, int year) const;
+        int FindYearWithCourse(const std::map<int, std::set<int>> &courses_of_year, int course);
     };
 }
 
