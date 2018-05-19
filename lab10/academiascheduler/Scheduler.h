@@ -52,7 +52,23 @@ namespace academia{
 
     };
     class NoViableSolutionFound :public std::exception{
-
+    public:
+        NoViableSolutionFound();
+        const char * what();
+    private:
+        std::string message_;
+    };
+    class GreedyScheduler:public Scheduler{
+    public:
+        Schedule PrepareNewSchedule(const std::vector<int> &rooms,
+                                    const std::map<int, std::vector<int>> &teacher_courses_assignment,
+                                    const std::map<int, std::set<int>> &courses_of_year,
+                                    int n_time_slots) override;
+        SchedulingItem FindTeacherRoomMatch(Schedule schedule,
+                                            int course_id,
+                                            const std::map<int, std::vector<int>> &teacher_courses_assignment,
+                                            const std::vector<int> &rooms,
+                                            int n_time_slots, int year_) const;
     };
 }
 
