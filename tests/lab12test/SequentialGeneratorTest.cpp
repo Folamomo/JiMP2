@@ -37,6 +37,7 @@ class BaseValue {
   BaseValue(int initial_value=0) : value_{initial_value} {}
   BaseValue operator++() {
     ++value_;
+    return *this;
   }
   operator int() {
     return value_;
