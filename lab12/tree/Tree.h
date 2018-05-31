@@ -14,7 +14,7 @@ namespace tree {
         explicit Tree() : left_child_(nullptr), right_child_(nullptr){}
         explicit Tree(T value) : value_(value),  right_child_(nullptr), left_child_(nullptr){}
 
-        T& Value(){
+        T& Value() {
             return value_;
         }
 
@@ -52,8 +52,8 @@ namespace tree {
             }
         }
 
-        Tree <T> Root (){
-            return *this;
+        Tree <T>* Root (){
+            return this;
         }
 
         std::unique_ptr<Tree <T>> left_child_;

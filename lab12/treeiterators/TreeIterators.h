@@ -6,50 +6,58 @@
 #define JIMP_EXERCISES_TREEITERATORS_H
 
 #include <memory>
+#include <vector>
 #include <Tree.h>
 
 namespace tree{
     template <class T>
-    class InOrderTreeIterator{
+class InOrderTreeIterator{
     public:
-        InOrderTreeIterator(const Tree<T> &root, bool is_end) :node_(root), is_end_(is_end){
-            if (is_end_){
-                while (node_.right_child_!= nullptr){
-                    
-                }
-            }
+        explicit InOrderTreeIterator(Tree<T> *root){
+            OrderFiller(root);
+            position = 0;
         }
-        InOrderTreeIterator<T> operator ++ (){
 
+        void OrderFiller(Tree<T>* node){
+            if (node->left_child_!=nullptr) OrderFiller(node->left_child_.get());
+            order_.emplace_back(node);
+            if (node->right_child_!=nullptr) OrderFiller(node->right_child_.get());
+        }
+
+        InOrderTreeIterator<T> JumpToEnd(){
+            position = order_.size();
+            return *this;
+        }
+
+        InOrderTreeIterator<T> operator ++ (){
+            position++;
+            return *this;
         }
         T operator *(){
-            return node_->Value();
+            return order_[position]->Value();
         }
-        bool operator != (const InOrderTreeIterator& other){
-            return &node_!=&other.node_ or is_end_!=other.is_end_;
+        bool operator != (const InOrderTreeIterator& other) const{
+            return position!=other.position;
         }
     private:
-        const Tree<T> &node_;
-        bool visited_right_;
-        std::vector <const Tree<T>&> root_path_;
-        bool is_end_;
+        std::vector<Tree<T>*> order_;
+        size_t position;
     };
 
     template <class T>
     class InOrderTreeView{
     public:
-        explicit InOrderTreeView(Tree<T> *tree){
-            root_=tree;
-        }
+        explicit InOrderTreeView(Tree<T> *tree) :root_(tree){}
+
         InOrderTreeIterator<T> begin(){
-            return InOrderTreeIterator(*root_, false);
+            return InOrderTreeIterator<T>(root_);
         }
         InOrderTreeIterator<T> end(){
-            return InOrderTreeIterator(*root_, true);
+            return InOrderTreeIterator<T>(root_).JumpToEnd();
         }
 
     private:
-        Tree<T>* root_;
+        Tree<T> *root_;
     };
 
     template <class T>
